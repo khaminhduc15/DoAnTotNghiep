@@ -155,16 +155,16 @@ function userView() {
                             document.getElementById('choice-album').style.display = 'none';
                             let str = `<div id="playlist-selected-tiem">
                                             <div class="top-top">
-                                            <div class="top">
-                                            <img src="${item.avatar}" alt="">
-                                            <h2>${item.name}</h2>
-                                            <h2 style="color: red" onclick="deletePlayList(${item.id})">Delete</h2>
-                                            <button id="addSongToPlaylist" class="btn-save" onclick="addSongToPlaylist(${playlistId})" style="margin-left: 30px">Add Song To Playlist Now</button>
-                                            </div>
-                                            <div class="play-playlist-btn" >
-                                                <i class="fa-regular fa-circle-play pause" id="displayPlay" onclick="playList()"></i>
-                                                <i class="fa-regular fa-circle-pause pause" style="display: none" id="pauseMusic"></i>
-                                            </div>
+                                                <div class="top">
+                                                    <img src="${item.avatar}" alt="">
+                                                    <h2>${item.name}</h2>
+                                                    <button onclick="deletePlayList(${item.id})"><h2 style="color: red">Delete</h2></button>
+                                                    <button id="addSongToPlaylist" class="btn-save" onclick="addSongToPlaylist(${playlistId})" style="margin-left: 30px; width: 100px">Add Song To Playlist Now</button>
+                                                </div>
+                                                <div class="play-playlist-btn" >
+                                                    <i class="fa-regular fa-circle-play pause" id="displayPlay" onclick="playList()"></i>
+                                                    <i class="fa-regular fa-circle-pause pause" style="display: none" id="pauseMusic"></i>
+                                                </div>
                                             </div>
                                             <hr>
                                             <div class="bot">
@@ -371,8 +371,8 @@ function showListUser() {
         str += `</table>`;
         if (totalPages > 1) {
             str += `<div class="user-table-btn">
-                    <button onclick="previousPage()">Previous</button>
-                    <button onclick="nextPage()">Next</button>
+                    <button onclick="previousPage1()">Previous</button>
+                    <button onclick="nextPage1()">Next</button>
                     </div>`;
         }
         document.getElementById(`user-table`).innerHTML = str;
@@ -395,14 +395,14 @@ function changeEnabled(id) {
     })
 }
 
-function previousPage() {
+function previousPage1() {
     if (currentPage > 1) {
         currentPage--;
         showListUser();
     }
 }
 
-function nextPage() {
+function nextPage1() {
     if (currentPage < totalPages) {
         currentPage++;
         showListUser();
@@ -448,14 +448,27 @@ function showListAllSong(){
         str += `</table>`;
         if (totalPages > 1) {
             str += `<div class="user-table-btn">
-                    <button onclick="previousPage()">Previous</button>
-                    <button onclick="nextPage()">Next</button>
+                    <button onclick="previousPage2()">Previous</button>
+                    <button onclick="nextPage2()">Next</button>
                     </div>`;
         }
         document.getElementById(`user-table`).innerHTML = str;
     }).catch(error => {
         console.error('Error fetching user data:', error);
     });
+}
+function previousPage2() {
+    if (currentPage > 1) {
+        currentPage--;
+        showListAllSong();
+    }
+}
+
+function nextPage2() {
+    if (currentPage < totalPages) {
+        currentPage++;
+        showListAllSong();
+    }
 }
 function DeleteSong(id){
     axios.delete(`http://localhost:8080/api/songs/${id}`).then(() => {

@@ -127,14 +127,14 @@ function showAlbumSong(id) {
         // document.getElementById('choice-album').style.display = 'none';
         let str = `<div id="playlist-selected-tiem">
                                             <div class="top-top">
-                                            <div class="top">
-                                            <img src="${songs[0].album.avatar}" alt="">
-                                            <h2>Album: ${songs[0].album.name}</h2>
-                                            </div>
-                                            <div class="play-playlist-btn" >
-                                            <i class="fa-regular fa-circle-play pause" id="displayPlay" onclick="playList()"></i>
-                                            <i class="fa-regular fa-circle-pause pause" style="display: none" id="pauseMusic"></i>
-                                            </div>
+                                                <div class="top">
+                                                    <img src="${songs[0].album.avatar}" alt="">
+                                                    <h2>Album: ${songs[0].album.name}</h2>
+                                                </div>
+                                                <div class="play-playlist-btn" >
+                                                    <i class="fa-regular fa-circle-play pause" id="displayPlay" onclick="playList()"></i>
+                                                    <i class="fa-regular fa-circle-pause pause" style="display: none" id="pauseMusic"></i>
+                                                </div>
                                             </div>
                                             <hr>
                                             <div id="id_bot" class="bot">
@@ -395,7 +395,7 @@ function showAddSongForm() {
     document.getElementById("author-title").innerHTML = `Create New Song`
     document.getElementById(`create-song-button`).style.display = `none`
     document.getElementById(`search`).style.display = `none`
-    axios.get(`http://localhost:8080/api/albums`).then(albums => {
+    axios.get(`http://localhost:8080/api/albums/ `+ currentId).then(albums => {
         axios.get(`http://localhost:8080/api/singers`).then(singers => {
             axios.get(`http://localhost:8080/api/categories`).then(cates=>{
                 let str =

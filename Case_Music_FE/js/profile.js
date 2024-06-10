@@ -44,6 +44,7 @@ const getImageData = (e) => {
                     profileURL=url;
                     songURl = url;
                     document.getElementById('img_playlist').src=url
+                    document.getElementById('img_album').src=url
                     document.getElementById("profilePic").src = profileURL;
                     document.getElementById("profilePic").style.display = 'block';
                     document.getElementById(`song-url`).src = url;

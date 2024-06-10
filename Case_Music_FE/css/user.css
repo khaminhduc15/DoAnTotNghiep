@@ -452,9 +452,10 @@
 }
 
 .top {
+    flex-basis: 70%;
     margin-left: 12vw;
     display: flex;
-    justify-content: start;
+    justify-content: space-around;
     align-items: center;
 }
 
@@ -463,10 +464,11 @@
 }
 
 .play-playlist-btn {
+    flex-basis: 30%;
     display: flex;
-    justify-content: end;
+    justify-content: start;
     align-items: center;
-    margin-left: 46vw;
+    margin-left: 33vw;
 }
 
 .play-playlist-btn > i {
