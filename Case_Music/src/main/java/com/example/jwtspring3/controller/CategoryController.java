@@ -37,5 +37,6 @@ public class CategoryController {
         categoryService.remove(id);
         return new ResponseEntity("done delete", HttpStatus.OK);
     }
-
+    @GetMapping("/{id}")
+    public ResponseEntity getOneCategory(@PathVariable Long id) {return new ResponseEntity<>(categoryService.getOneCategory(id), HttpStatus.OK);}
 }

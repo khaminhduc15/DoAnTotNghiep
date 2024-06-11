@@ -42,7 +42,7 @@ public class UserController {
 
     @GetMapping("/admin")
     public ResponseEntity<Iterable<User>> showAllUser() {
-        Iterable<User> users = userService.findAllByRolesNameNot();
+        Iterable<User> users = userService.findAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
