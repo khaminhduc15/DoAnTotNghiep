@@ -31,9 +31,10 @@
 .App::-webkit-scrollbar {
     display: none;
 }
-#list-allsong{
+#list-allsong, #list-allcategory, #list-allsinger{
     display: none;
 }
+
 #for-user, #for-user1 {
     display: none;
 }

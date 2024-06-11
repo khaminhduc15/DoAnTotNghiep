@@ -291,7 +291,7 @@ document.getElementById("main-view").addEventListener("click", function () {
 });
 document.getElementById("home-btn").addEventListener("click", function () {
     if (token !== null && role === 'ROLE_ADMIN') {
-        showListUser();
+        window.location.reload();
         authorBackground.style.display="none";
     } else if (token !== null && role === 'ROLE_AUTHOR') {
         showSongByAuthorId()
@@ -323,6 +323,8 @@ document.getElementById("logout").addEventListener("click", function () {
 
 function showListUser() {
     document.getElementById('list-allsong').style.display='block'
+    document.getElementById('list-allsinger').style.display='block'
+    document.getElementById('list-allcategory').style.display='block'
     document.getElementById('search').style.display = 'none'
     profileNav.style.display = "flex";
     adminBox.style.display = "block";
@@ -375,7 +377,7 @@ function showListUser() {
                     <button onclick="nextPage1()">Next</button>
                     </div>`;
         }
-        document.getElementById(`user-table`).innerHTML = str;
+        document.getElementById('user-table').innerHTML = str;
     }).catch(error => {
         console.error('Error fetching user data:', error);
     });
@@ -475,3 +477,202 @@ function DeleteSong(id){
         showListAllSong();
     })
 }
+function showListAllSinger(){
+    axios.get(`http://localhost:8080/api/singers`).then(response => {
+        let data = response.data;
+        // console.log(data);
+        totalPages = Math.ceil(data.length / itemsPerPage);
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = Math.min(startIndex + itemsPerPage, data.length);
+        let str = `
+                <h1 style="color: white">List All Singer</h1>
+                <button onclick="showAddSingerForm()" id="create-song-button"><i class="fa-solid fa-plus"></i></button>
+                    <table id="user-table-1">
+                        <tr>
+                            <th>STT</th>
+                            <th>Name</th>
+                            <th></th>
+                            <th></th>
+                        </tr>`;
+        for (let i = startIndex; i < endIndex; i++) {
+            str += `<tr>
+                        <td id="STT-${data[i].id}">${i+1}</td>
+                        <td id="singer-${data[i].id}">${data[i].name}</td>
+                        <td id="edit-save-${data[i].id}"><button onclick="showEditSinger(${data[i].id})" id="edit-singer-${data[i].id}" class="btn btn-success">Edit</button></td>
+                        <td><button onclick="DeleteSinger(${data[i].id})" class="btn btn-success">Delete</button></td>
+                    </tr>`;
+        }
+        str += `</table>`;
+        if (totalPages > 1) {
+            str += `<div class="user-table-btn">
+                    <button onclick="previousPage3()">Previous</button>
+                    <button onclick="nextPage3()">Next</button>
+                    </div>`;
+        }
+        document.getElementById(`user-table`).innerHTML = str;
+    }).catch(error => {
+        console.error('Error fetching user data:', error);
+    });
+}
+function previousPage3() {
+    if (currentPage > 1) {
+        currentPage--;
+        showListAllSinger();
+    }
+}
+
+function nextPage3() {
+    if (currentPage < totalPages) {
+        currentPage++;
+        showListAllSinger();
+    }
+}
+function showEditSinger(id){
+    axios.get(`http://localhost:8080/api/singers/${id}`).then(r => {
+        let data = r.data;
+        let str = `<input type="text" id="id-editname" value="${data.name}" >`
+        document.getElementById(`singer-`+id).innerHTML = str
+        document.getElementById(`edit-singer-`+id).style.display = 'none'
+        document.getElementById(`edit-save-`+id).innerHTML = `<button onclick="EditSinger(${data.id})" class="btn btn-success">Save</button>`
+    })
+}
+function EditSinger(id){
+    let name = document.getElementById('id-editname').value
+    // console.log(name)
+    let singer = {
+        name : name,
+        author_id : null,
+    }
+    axios.put(`http://localhost:8080/api/singers/`+id, singer).then(() =>{
+        showListAllSinger()
+    })
+
+
+}
+function DeleteSinger(id) {
+    axios.delete(`http://localhost:8080/api/singers/${id}`).then(() => {
+        showListAllSinger();
+    })
+}
+function showAddSingerForm(){
+    let str = `
+    <h1 style="color: white">Add Singer</h1>
+    <label>Name: <input type="text" name="name" id="id-name"></label>
+    <button onclick="addSinger()" id="save-song-button">Save</button>
+    `
+    document.getElementById('user-table').innerHTML = str;
+}
+function addSinger(){
+    let name = document.getElementById('id-name').value
+    if (name == {}){
+        alert("Please Enter Singer Name!")
+    }
+    else {
+        let data = {
+            name : document.getElementById('id-name').value,
+        }
+        axios.post(`http://localhost:8080/api/singers`, data).then(() => {
+            showListAllSinger()
+        })
+    }
+}
+
+function showListAllCategory(){
+    axios.get(`http://localhost:8080/api/categories`).then(response => {
+        let data = response.data;
+        // console.log(data);
+        totalPages = Math.ceil(data.length / itemsPerPage);
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = Math.min(startIndex + itemsPerPage, data.length);
+        let str = `
+                <h1 style="color: white">List All Category</h1>
+                <button onclick="showAddCategoryForm()" id="create-song-button"><i class="fa-solid fa-plus"></i></button>
+                    <table id="user-table-1">
+                        <tr>
+                            <th>STT</th>
+                            <th>Name</th>
+                            <th></th>
+                            <th></th>
+                        </tr>`;
+        for (let i = startIndex; i < endIndex; i++) {
+            str += `<tr>
+                        <td id="STT-${data[i].id}">${i+1}</td>
+                        <td id="category-${data[i].id}">${data[i].name}</td>
+                        <td id="edit-save-${data[i].id}"><button onclick="showEditCategory(${data[i].id})" id="edit-category-${data[i].id}" class="btn btn-success">Edit</button></td>
+                        <td><button onclick="DeleteCategory(${data[i].id})" class="btn btn-success">Delete</button></td>
+                    </tr>`;
+        }
+        str += `</table>`;
+        if (totalPages > 1) {
+            str += `<div class="user-table-btn">
+                    <button onclick="previousPage4()">Previous</button>
+                    <button onclick="nextPage4()">Next</button>
+                    </div>`;
+        }
+        document.getElementById(`user-table`).innerHTML = str;
+    }).catch(error => {
+        console.error('Error fetching user data:', error);
+    });
+}
+function previousPage4() {
+    if (currentPage > 1) {
+        currentPage--;
+        showListAllCategory();
+    }
+}
+
+function nextPage4() {
+    if (currentPage < totalPages) {
+        currentPage++;
+        showListAllCategory();
+    }
+}
+function showEditCategory(id){
+    axios.get(`http://localhost:8080/api/categories/${id}`).then(r => {
+        let data = r.data;
+        let str = `<input type="text" id="id-editname" value="${data.name}" >`
+        document.getElementById(`category-`+id).innerHTML = str
+        document.getElementById(`edit-category-`+id).style.display = 'none'
+        document.getElementById(`edit-save-`+id).innerHTML = `<button onclick="EditCategory(${data.id})" class="btn btn-success">Save</button>`
+    })
+}
+function EditCategory(id){
+    let name = document.getElementById('id-editname').value
+    // console.log(name)
+    let category = {
+        name : name,
+    }
+    axios.put(`http://localhost:8080/api/categories/`+id, category).then(() =>{
+        showListAllCategory()
+    })
+
+
+}
+function DeleteCategory(id) {
+    axios.delete(`http://localhost:8080/api/categories/${id}`).then(() => {
+        showListAllCategory();
+    })
+}
+function showAddCategoryForm(){
+    let str = `
+    <h1 style="color: white">Add Category</h1>
+    <label>Name: <input type="text" name="name" id="id-name"></label>
+    <button onclick="addCategory()" id="save-song-button">Save</button>
+    `
+    document.getElementById('user-table').innerHTML = str;
+}
+function addCategory(){
+    let name = document.getElementById('id-name').value
+    if (name == {}){
+        alert("Please Enter Category Name!")
+    }
+    else {
+        let data = {
+            name : document.getElementById('id-name').value,
+        }
+        axios.post(`http://localhost:8080/api/categories`, data).then(() => {
+            showListAllCategory()
+        })
+    }
+}
+

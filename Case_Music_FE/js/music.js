@@ -392,6 +392,7 @@ function removeSong(id) {
 }
 
 function showAddSongForm() {
+    document.getElementById('label_showAllSong').style.display = 'none'
     document.getElementById("author-title").innerHTML = `Create New Song`
     document.getElementById(`create-song-button`).style.display = `none`
     document.getElementById(`search`).style.display = `none`
